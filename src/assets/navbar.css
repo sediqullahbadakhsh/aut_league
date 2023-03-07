@@ -1,0 +1,41 @@
+.navbar {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.navbar-item a {
+  text-decoration: none;
+  color: #333;
+}
+
+.navbar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+}
+
+.navbar-item:hover .navbar-dropdown {
+  display: flex;
+}
+
+.navbar-dropdown-item {
+  padding: 1rem;
+  white-space: nowrap;
+}
+
+.navbar-dropdown-item a {
+  color: #333;
+}
