@@ -124,3 +124,21 @@ Login/signup Page
 .modal button:hover {
   background-color: #0062cc;
 }
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+}
+
+/* sidebar */
+.sidebar {
+  position: relative;
+  height: 80%;
+  width: 200px;
+  top: 30;
+  padding: 10px;
+
+  border-left: solid 1px #1f1e1e;
+}
+.dashboard-content {
+  padding: 20px;
+}

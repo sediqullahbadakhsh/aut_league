@@ -7,6 +7,7 @@ const login = createAsyncThunk("users/fetch", async (user) => {
     ...user,
   });
   localStorage.setItem("token", response.data["access-token"]);
+  localStorage.setItem("user", response.data["name"]);
   return response.data;
 });
 
@@ -26,6 +27,7 @@ const updateUser = createAsyncThunk("users/update", async (user) => {
 
 const logout = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
 });
 
 export { login, addUser, updateUser, logout };

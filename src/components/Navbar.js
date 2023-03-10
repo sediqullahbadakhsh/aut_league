@@ -1,6 +1,25 @@
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/thunks/userThunk";
 import "../assets/navbar.css";
+
 function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    navigate("/");
+    dispatch(logout());
+    setToken(null);
+  };
+
   return (
     <div className="header">
       <div>
@@ -36,7 +55,13 @@ function Navbar() {
         </ul>
       </nav>
       <div>
-        <Link to="/signin">ثبت نام/ورود</Link>
+        {token ? (
+          <p style={{ cursor: "pointer" }} onClick={handleLogout}>
+            خروج
+          </p>
+        ) : (
+          <Link to="/signin">ثبت نام/ورود</Link>
+        )}
       </div>
     </div>
   );
