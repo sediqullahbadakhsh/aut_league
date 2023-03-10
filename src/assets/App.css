@@ -139,6 +139,11 @@ Login/signup Page
 
   border-left: solid 1px #1f1e1e;
 }
+.sidebar ul li {
+  margin: 10px 0;
+  font-size: 20px;
+  cursor: pointer;
+}
 .dashboard-content {
   padding: 20px;
 }
