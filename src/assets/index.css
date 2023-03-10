@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Vazir-Regular-FD-UI";
+  src: local("Vazir-Regular-FD-UI"),
+    url("./fonts/Vazir-Regular-FD-UI.ttf") format("truetype");
+}
+
 body {
   margin: 0;
   font-family: Vazir-Regular-FD-UI;
@@ -5,9 +11,4 @@ body {
 
 li {
   list-style: none;
-}
-@font-face {
-  font-family: "Vazir-Regular-FD-UI";
-  src: local("Vazir-Regular-FD-UI"),
-    url("./fonts/Vazir-Regular-FD-UI.ttf") format("truetype");
 }
