@@ -32,8 +32,14 @@ a {
   justify-content: center;
 }
 
+.error {
+  color: red;
+}
+.error::before {
+  content: "* ";
+}
 /*
-Login Page
+Login/signup Page
 */
 .form-container {
   display: flex;
