@@ -10,14 +10,16 @@ function Navbar() {
   const [token, setToken] = useState();
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    const storedToken = localStorage.getItem("token");
+    return setToken(storedToken);
   }, []);
 
   const handleLogout = (e) => {
     e.preventDefault();
-    navigate("/");
-    dispatch(logout());
+    localStorage.removeItem("token");
     setToken(null);
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -46,9 +48,11 @@ function Navbar() {
               </li>
             </ul>
           </li>
-          <li className="navbar-item">
-            <Link to="/dashboard">دشبورد</Link>
-          </li>
+          {token && (
+            <li className="navbar-item">
+              <Link to="/dashboard">دشبورد</Link>
+            </li>
+          )}
           <li className="navbar-item">
             <Link to="/contact">تماس باما</Link>
           </li>
