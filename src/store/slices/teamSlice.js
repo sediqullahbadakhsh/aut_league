@@ -7,7 +7,7 @@ import {
 } from "../thunks/teamThunk";
 
 const teamSlice = createSlice({
-  name: "users",
+  name: "teams",
   initialState: {
     data: [],
     isLoading: false,
