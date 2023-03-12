@@ -8,18 +8,27 @@ import "./assets/App.css";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import NoPage from "./pages/NoPage";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [isLogin, setIsLogin] = useState();
+  const [Disappear, setDisappear] = useState(false);
+  useEffect(() => {
+    setIsLogin(localStorage.getItem("token"));
+  }, []);
+  console.log(Disappear);
   return (
     <div className="App">
-      <Navbar />
+      {isLogin || Disappear ? null : <Navbar />}
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/simulation" element={<Simulation />} />
-        <Route path="/signin" element={<Login />} />
+        <Route path="/signin" element={<Login setDisappear={setDisappear} />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<NoPage />} />
       </Routes>
     </div>
   );
