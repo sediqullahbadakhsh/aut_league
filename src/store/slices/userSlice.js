@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, addUser, updateUser, logout } from "../thunks/userThunk";
+import { login, addUser, logout } from "../thunks/userThunk";
 
 const userSlice = createSlice({
   name: "users",
@@ -31,27 +31,14 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.error = action.error;
     });
-    builder.addCase(updateUser.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(updateUser.fulfilled, (state, action) => {
-      state.isLoading = false;
-      const updatedUserIndex = state.data.findIndex(
-        (user) => user.id === action.payload.id
-      );
-      state.data[updatedUserIndex] = action.payload;
-    });
-    builder.addCase(updateUser.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
     builder.addCase(logout.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(logout.fulfilled, (state, action) => {
+
+    builder.addCase(logout.fulfilled, (state) => {
       state.isLoading = false;
-      state.data = state.data.filter((user) => user.id !== action.payload.id);
     });
+
     builder.addCase(logout.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
