@@ -1,5 +1,5 @@
 import Navbar from "./components/Navbar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
@@ -13,16 +13,25 @@ import { useEffect, useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [isLogin, setIsLogin] = useState();
-  const [Disappear, setDisappear] = useState(false);
+  const location = useLocation();
+  const [Disappear, setDisappear] = useState();
+  const [hidNav, setHidNav] = useState(false);
+
+  const isSignedIn = Disappear;
   useEffect(() => {
-    setIsLogin(localStorage.getItem("token"));
-  }, []);
-  const isSignedIn = isLogin;
-  console.log(Disappear);
+    if (
+      location.pathname === "/signin" ||
+      location.pathname === "/signup" ||
+      location.pathname === "/dashboard"
+    ) {
+      setHidNav(true);
+    }
+  }, [location.pathname, Disappear]);
+  console.log(hidNav);
+
   return (
     <div className="App">
-      {isLogin || Disappear ? null : <Navbar />}
+      {hidNav ? null : <Navbar />}
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route path="/contact" element={<Contact />} />
