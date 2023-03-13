@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/thunks/userThunk";
-export default function Login() {
+
+export default function Login({ setDisappear }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+
+  const hundleClick = () => {
+    setDisappear(true);
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -75,7 +80,11 @@ export default function Login() {
               )}
             </div>
 
-            <button className="login-btn" type="submit">
+            <button
+              onClick={() => hundleClick()}
+              className="login-btn"
+              type="submit"
+            >
               ورود
             </button>
           </div>
