@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NoPage from "./pages/NoPage";
 import { useEffect, useState } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [isLogin, setIsLogin] = useState();
@@ -17,6 +18,7 @@ function App() {
   useEffect(() => {
     setIsLogin(localStorage.getItem("token"));
   }, []);
+  const isSignedIn = isLogin;
   console.log(Disappear);
   return (
     <div className="App">
@@ -24,7 +26,14 @@ function App() {
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute isSignedIn={isSignedIn}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/simulation" element={<Simulation />} />
         <Route path="/signin" element={<Login setDisappear={setDisappear} />} />
         <Route path="/signup" element={<Signup />} />
