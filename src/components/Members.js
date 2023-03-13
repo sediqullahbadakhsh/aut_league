@@ -11,7 +11,7 @@ function Members() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchMember());
-  }, [show, dispatch, showEdit]);
+  }, [dispatch]);
   const hundelRemove = (id) => {
     dispatch(removeMember({ id }));
   };
