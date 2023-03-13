@@ -4,7 +4,7 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 
 const fetchTeam = createAsyncThunk("team/fetch", async () => {
-  const response = await axios.post(`${BASE_URL}team/all`, null, {
+  const response = await axios.get(`${BASE_URL}team/all`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -29,7 +29,7 @@ const addTeam = createAsyncThunk("team/add", async (team) => {
 });
 
 const updateTeam = createAsyncThunk("team/update", async (team) => {
-  const response = await axios.post(
+  const response = await axios.put(
     `${BASE_URL}team/edit`,
     {
       ...team,
