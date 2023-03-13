@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTeam, removeTeam } from "../store/thunks/teamThunk";
 import TeamsModal from "./TeamsModal";
+import ViewTeam from "./ViewTeam";
 
 function Teams() {
   const teams = useSelector((state) => state.teams.data.teams);
   const [showEdit, setShowEdit] = useState(false);
   const [show, setShow] = useState(false);
+  const [viewTeam, setViewTeam] = useState(false);
   const [editData, setEditData] = useState();
+  const [viewData, setViewData] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchTeam());
-  }, [show, dispatch, showEdit]);
+  }, [dispatch]);
   const hundelRemove = (id) => {
     dispatch(removeTeam({ id }));
   };
@@ -44,6 +47,17 @@ function Teams() {
                 <td>{team.phone}</td>
                 <td>{team.address}</td>
                 <td style={{ display: "flex", gap: "5px", cursor: "pointer" }}>
+                  <p
+                    onClick={() => {
+                      setViewTeam(true);
+                      setViewData(team);
+                    }}
+                  >
+                    view
+                  </p>
+                  {viewTeam && (
+                    <ViewTeam viewData={viewData} setViewTeam={setViewTeam} />
+                  )}
                   <p
                     onClick={() => {
                       setShowEdit(true);
