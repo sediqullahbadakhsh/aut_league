@@ -4,6 +4,9 @@ import { fetchTeam, removeTeam } from "../store/thunks/teamThunk";
 import TeamsModal from "./TeamsModal";
 import ViewTeam from "./ViewTeam";
 import ReactPaginate from "react-paginate";
+import { BiEdit } from "react-icons/bi";
+import { AiFillEye } from "react-icons/ai";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 function Teams() {
   const teams = useSelector((state) => state.teams.data.teams);
@@ -47,6 +50,7 @@ function Teams() {
       <table>
         <thead>
           <tr>
+            <th>شناسه</th>
             <th>نام</th>
             <th>دسته بندی</th>
             <th>تلفن</th>
@@ -57,34 +61,39 @@ function Teams() {
         <tbody>
           {teamsToDisplay?.map((team) => (
             <tr key={team.id}>
+              <td>{team.id}</td>
               <td>{team.name}</td>
               {team.category === 1 ? <td>شبه سازی</td> : <td>فزیکی</td>}
               <td>{team.phone}</td>
               <td>{team.address}</td>
               <td className="actions">
                 <p
+                  className="view-btn"
                   onClick={() => {
                     setViewTeam(true);
                     setViewData(team);
                   }}
                 >
-                  view
+                  <AiFillEye />
                 </p>
                 {viewTeam && (
                   <ViewTeam viewData={viewData} setViewTeam={setViewTeam} />
                 )}
                 <p
+                  className="edit-btn"
                   onClick={() => {
                     setShowEdit(true);
                     setEditData(team);
                   }}
                 >
-                  edit
+                  <BiEdit />
                 </p>
                 {showEdit && (
                   <TeamsModal setShowEdit={setShowEdit} editData={editData} />
                 )}
-                <p onClick={() => handleRemove(team.id)}>remove</p>
+                <p className="delete-btn" onClick={() => handleRemove(team.id)}>
+                  <RiDeleteBin6Line />
+                </p>
               </td>
             </tr>
           ))}
