@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/thunks/userThunk";
@@ -9,13 +9,16 @@ export default function Login({ setDisappear }) {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const navigate = useNavigate();
 
-  const hundleClick = () => {
-    setDisappear(true);
+  const hideModal = () => {
+    setShowModal(false);
+    setModalMessage("");
   };
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let emailError = "";
@@ -31,22 +34,39 @@ export default function Login({ setDisappear }) {
     // Validate password
     if (!password) {
       passwordError = "رمز عبور الزامی است!";
-    } else if (password.length < 8) {
-      passwordError = "رمز عبور باید حداقل 8 کاراکتر باشد!";
     }
 
     if (emailError || passwordError) {
       setEmailError(emailError);
       setPasswordError(passwordError);
+      setShowModal(true);
+      setModalMessage("Validation error");
     } else {
-      await dispatch(login({ email, password }));
-      navigate("/dashboard");
+      try {
+        await dispatch(login({ email, password })).unwrap();
+        setDisappear(localStorage.getItem("token"));
+        navigate("/dashboard");
+      } catch (error) {
+        setShowModal(true);
+        setModalMessage("رمز یا ایمیل اشتباه است!");
+      }
     }
-  }
-
+  };
+  useEffect(() => {
+    if (showModal) {
+      const timeoutId = setTimeout(hideModal, 3000); // hide the modal after 3 seconds
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showModal]);
   return (
     <div className="container">
-      {" "}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{modalMessage}</h2>
+          </div>
+        </div>
+      )}{" "}
       <div className="form-container">
         <h1>ورود</h1>
         <form onSubmit={handleSubmit}>
@@ -80,11 +100,7 @@ export default function Login({ setDisappear }) {
               )}
             </div>
 
-            <button
-              onClick={() => hundleClick()}
-              className="login-btn"
-              type="submit"
-            >
+            <button className="login-btn" type="submit">
               ورود
             </button>
           </div>
