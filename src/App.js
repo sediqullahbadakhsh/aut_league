@@ -22,12 +22,13 @@ function App() {
     if (
       location.pathname === "/signin" ||
       location.pathname === "/signup" ||
-      location.pathname === "/dashboard"
+      location.pathname === "/dashboard" ||
+      location.pathname === "/dashboard/league/teams" ||
+      location.pathname === "/dashboard/league/members"
     ) {
       setHidNav(true);
     }
   }, [location.pathname, Disappear]);
-  console.log(hidNav);
 
   return (
     <div className="App">
