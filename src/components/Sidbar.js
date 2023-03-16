@@ -9,35 +9,28 @@ export default function Sidbar() {
 
   // logout page
   const handleLogout = (e) => {
-    dispatch(logout());
-    navigate("/");
-    window.location.reload();
+    dispatch(logout())
+      .then(() => {
+        navigate("/");
+      })
+      .then(() => {
+        window.location.reload();
+      });
   };
 
   return (
     <div className="sidebar">
       <div>
-        <p style={{ cursor: "pointer" }} onClick={handleLogout}>
-          خروج
-        </p>
+        <h2 className="sidebar-heading">منو</h2>
       </div>
-      <ul>
-        <li>
-          <Link style={{ color: "black" }} to="/dashboard">
-            داشبورد
-          </Link>
-        </li>
-        <li>
-          <Link style={{ color: "black" }} to="/dashboard/league/members">
-            اعضا
-          </Link>
-        </li>
-        <li>
-          <Link style={{ color: "black" }} to="/dashboard/league/teams">
-            تیم ها
-          </Link>
-        </li>
-      </ul>
+      <div className="menu-list">
+        <Link to="/dashboard">داشبورد</Link>
+        <Link to="/dashboard/league/members">اعضا</Link>
+        <Link to="/dashboard/league/teams">تیم ها</Link>
+      </div>
+      <p style={{ cursor: "pointer", padding: "10px" }} onClick={handleLogout}>
+        خروج
+      </p>
     </div>
   );
 }

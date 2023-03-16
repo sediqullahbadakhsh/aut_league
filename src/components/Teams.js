@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import { BiEdit } from "react-icons/bi";
 import { AiFillEye } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Dfooter from "./Dfooter";
 
 function Teams() {
   const teams = useSelector((state) => state.teams.data.teams);
@@ -100,8 +101,8 @@ function Teams() {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={"previous"}
-        nextLabel={"next"}
+        previousLabel={"قبلی"}
+        nextLabel={"بعدی"}
         breakLabel={"..."}
         pageCount={Math.ceil(teams && teams.length / itemsPerPage)}
         marginPagesDisplayed={2}
@@ -119,6 +120,7 @@ function Teams() {
         activeClassName="active"
         renderOnZeroPageCount={null}
       />
+      <Dfooter />
     </div>
   );
 }

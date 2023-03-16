@@ -140,27 +140,7 @@ Login/signup Page
   flex-direction: row;
   gap: 20px;
 }
-/* sidebar */
-.sidebar {
-  position: relative;
-  height: 80%;
-  width: 200px;
-  top: 30;
-  padding: 10px;
 
-  border-left: solid 1px #1f1e1e;
-}
-.sidebar ul li {
-  margin: 10px 0;
-  font-size: 20px;
-  cursor: pointer;
-}
-.dashboard-content {
-  padding: 10px;
-}
-td {
-  padding: 1px 15px;
-}
 /*  */
 
 .close-btn {
@@ -191,13 +171,14 @@ select {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 20px;
+  min-height: 100vh;
 }
 .header_text {
   font-size: 30px;
   font-weight: bold;
   color: #070707;
   padding: 10px 30px;
-  background-color: #70aeff;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -241,6 +222,7 @@ td {
 }
 tr {
   border-bottom: 1px solid #ddd;
+  max-height: 40px;
 }
 .actions {
   display: flex;
@@ -267,6 +249,7 @@ tr {
 .pagination {
   display: flex;
   justify-content: center;
+  gap: 10px;
   align-items: center;
   margin: 0;
   padding: 0;
@@ -274,8 +257,22 @@ tr {
 }
 .pagination li {
   margin: 0 5px;
-  color: black !important;
 }
 .pagination li a {
-  color: black !important;
+  color: black;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.bottom-ftr {
+  border-top: 1px solid #000;
+  display: flex;
+  column-gap: 30px;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  font-weight: 800;
+}
+.bottom-ftr a {
+  color: rgb(0, 0, 0);
 }
