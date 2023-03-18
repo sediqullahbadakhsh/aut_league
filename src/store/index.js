@@ -12,8 +12,3 @@ export const store = configureStore({
     teamMembers: teamMemberReducer,
   },
 });
-
-export * from "./thunks/userThunk";
-export * from "./thunks/teamThunk";
-export * from "./thunks/memberThunk";
-export * from "./thunks/teamMemberThunk";
