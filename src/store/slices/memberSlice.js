@@ -41,11 +41,11 @@ const teamSlice = createSlice({
     });
     builder.addCase(updateMember.fulfilled, (state, action) => {
       state.isLoading = false;
-      const updatedUserIndex = state.data.findIndex(
-        (user) => user.id === action.payload.id
+      state.data = state.data.map((member) =>
+        member.id === action.payload.id ? action.payload : member
       );
-      state.data[updatedUserIndex] = action.payload;
     });
+
     builder.addCase(updateMember.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;

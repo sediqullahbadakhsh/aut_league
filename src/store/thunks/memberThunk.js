@@ -1,12 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { BASE_URL } from "../baseURL";
+import { BASE_URL, getToken } from "../baseURL";
 import axios from "axios";
-const token = localStorage.getItem("token");
 
 const fetchMember = createAsyncThunk("member/fetch", async () => {
   const response = await axios.get(`${BASE_URL}member/all`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return response.data;
@@ -26,7 +25,7 @@ const addMember = createAsyncThunk(
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }
     );
@@ -49,7 +48,7 @@ const updateMember = createAsyncThunk(
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }
     );
@@ -66,7 +65,7 @@ const removeMember = createAsyncThunk("member/remove", async (member) => {
     },
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );
