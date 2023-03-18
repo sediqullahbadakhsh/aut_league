@@ -1,3 +1,6 @@
+.app {
+  min-height: 100vh;
+}
 .header {
   background-color: #1f1e1e;
   color: #fff;
@@ -263,6 +266,10 @@ tr {
   cursor: pointer;
   border-radius: 20px;
   padding: 5px;
+}
+.pagination li a:hover {
+  background-color: #70aeff;
+  color: #fff;
 }
 
 .bottom-ftr {
