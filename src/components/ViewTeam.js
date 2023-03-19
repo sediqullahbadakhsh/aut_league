@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { GrClose } from "react-icons/gr";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
 import {
   addTeamMember,
   removeTeamMember,
@@ -32,60 +35,96 @@ export default function ViewTeam({ setViewTeam, viewData }) {
   };
 
   return (
-    <div className="modal view-team">
-      <div className="modal-content ">
-        <p
+    <div className="modal ">
+      <div className="modal-content view-team">
+        <div
           className="close-btn"
           onClick={() => {
             setViewTeam(false);
           }}
         >
-          close
-        </p>
-        <div dir="rtl" className="team-info">
-          <h2>اسم تیم:{viewData.name}</h2>
-          <h2>
-            {" "}
-            دسته بندی:
-            {viewData.category === 1 ? <p>شبه سازی</p> : <p>فزیکی</p>}
-          </h2>
-          <h2>شماره تماس:{viewData.phone}</h2>
-          <h2>آدرس:{viewData.address}</h2>
+          <GrClose />
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="input-field">
-            <label dir="rtl" htmlFor="member">
-              انتخاب عضو
-            </label>
-            <select
-              id="teamMember"
-              value={memberId}
-              onChange={(e) => setMemberId(e.target.value)}
-            >
-              <option value="" disabled>
-                انتخاب عضو
-              </option>
-              {members &&
-                members.map((member) => (
-                  <option key={member.id} value={member.id}>
-                    {member["first-name"]}
-                  </option>
-                ))}
-            </select>
+        <div dir="rtl" className="team-info">
+          <div className="row">
+            <div>
+              <span style={{ fontWeight: "bold" }}>اسم تیم:</span>
+              <span>{viewData.name}</span>
+            </div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>شماره تماس:</span>
+              <span>{viewData.phone}</span>
+            </div>
           </div>
-          <button type="submit" className="btn">
-            اضافه کردن
-          </button>
+          <div className="row">
+            <div>
+              <span style={{ fontWeight: "bold" }}>دسته بندی:</span>
+
+              {viewData.category === 1 ? (
+                <span>شبه سازی</span>
+              ) : (
+                <span>فزیکی</span>
+              )}
+            </div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>آدرس:</span>
+              <span>{viewData.address}</span>
+            </div>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="add-member">
+            <p dir="rtl" htmlFor="member">
+              عضو را انتخاب کنید:
+            </p>
+            <div className="input-field">
+              <select
+                id="teamMember"
+                value={memberId}
+                onChange={(e) => setMemberId(e.target.value)}
+              >
+                <option value="" disabled>
+                  انتخاب عضو
+                </option>
+                {members &&
+                  members.map((member) => (
+                    <option key={member.id} value={member.id}>
+                      {member["first-name"] + " " + member["last-name"]}
+                    </option>
+                  ))}
+              </select>
+
+              <button type="submit" className="btn">
+                اضافه کردن
+              </button>
+            </div>
+          </div>
         </form>
-        <div>
-          {viewData.members.map((member) => {
-            return (
-              <div style={{ display: "flex", gap: "10px" }} key={member.id}>
-                <h2>{member["first-name"]}</h2>
-                <button onClick={() => getMemberId(member.id)}>حذف</button>
-              </div>
-            );
-          })}
+        <div className="members-list">
+          <div className="members-heading">
+            <p>نام عضو</p>
+            <p>نام فامیلی</p>
+            <p>شماره تماس</p>
+            <p>اکشن</p>
+          </div>
+          <div className="members-content">
+            {viewData.members.map((member) => {
+              return (
+                <div className="members-row" key={member.id}>
+                  <p>{member["first-name"]}</p>
+                  <p>{member["last-name"]}</p>
+                  <p>{member.phone}</p>
+                  <span
+                    className="delete-btn"
+                    onClick={() => getMemberId(member.id)}
+                  >
+                    <RiDeleteBin6Line />
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

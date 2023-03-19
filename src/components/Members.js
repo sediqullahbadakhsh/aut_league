@@ -4,7 +4,6 @@ import { fetchMember, removeMember } from "../store/thunks/memberThunk";
 import MembersModal from "./MembersModal";
 import ReactPaginate from "react-paginate";
 import { BiEdit } from "react-icons/bi";
-import { AiFillEye } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Dfooter from "./Dfooter";
 
@@ -18,7 +17,7 @@ function Members() {
   const itemsPerPage = 10;
   useEffect(() => {
     dispatch(fetchMember());
-  }, [dispatch]);
+  }, []);
   const hundelRemove = (id) => {
     dispatch(removeMember({ id }));
   };

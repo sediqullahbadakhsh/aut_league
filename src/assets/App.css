@@ -95,10 +95,12 @@ Login/signup Page
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.356);
+  background-color: rgba(0, 0, 0, 0.651);
   display: flex;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .modal-content {
@@ -111,52 +113,12 @@ Login/signup Page
   flex-direction: column;
   gap: 20px;
 }
-
-.modal h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.modal button {
-  background-color: #000000;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.modal button:hover {
-  background-color: #000000;
-}
-.dashboard {
-  display: grid;
-  grid-template-columns: 1fr 6fr;
-}
-
-.view-team {
-  cursor: auto;
-}
-.team-info {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-/*  */
-
-.close-btn {
-  align-self: flex-end;
-  cursor: pointer;
-}
 .modal-content > .input-field {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
 }
-
 .modal-content > .input-field > input,
 select {
   width: 300px;
@@ -165,9 +127,113 @@ select {
   border: solid 1px #1f1e1e;
   padding: 5px;
 }
+
+.modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.modal button {
+  background-color: #004eb4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+}
+.view-team {
+  min-height: 300px;
+  min-width: 600px;
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px #1f1e1e;
+}
+.team-info > .row {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 50px;
+  text-align: right;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.team-info > .row > div > span {
+  font-size: 18px;
+  padding: 5px;
+  word-wrap: break-word;
+}
+
+/*  */
+
+.close-btn {
+  align-self: flex-start;
+  cursor: pointer;
+  margin-right: -20px;
+  margin-top: -20px;
+}
+.close-btn:hover {
+  background-color: #70aeff;
+}
+.add-member {
+  display: flex;
+  flex-direction: column;
+}
+.add-member p {
+  align-self: flex-start;
+}
+.add-member > .input-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+}
+.add-member > .input-field select {
+  width: 400px;
+  height: 40px;
+  border-radius: 10px;
+  padding: 5px;
+}
+.members-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  max-height: 250px;
+  overflow-y: scroll;
+}
+.members-list > .members-heading {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid #000;
+}
+.members-content {
+  display: flex;
+  flex-direction: column;
+}
+.members-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  height: 40px;
+}
 select {
   width: 310px;
   height: 40px;
+  border-radius: 10px;
 }
 
 .list-main {
@@ -202,46 +268,65 @@ select {
   align-self: flex-end;
 }
 
-table {
+.table {
   border-collapse: collapse;
   width: 100%;
   border: 1px solid #ddd;
   font-size: 18px;
+  display: flex;
+  flex-direction: column;
 }
-th {
+.table-heading-container {
   background-color: #70aeff;
   color: #fff;
   padding: 10px 0;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;
+  text-align: right;
 }
-tbody {
-  overflow: scroll;
-  min-height: 300px;
+.table-heading,
+.table-data {
+  padding-right: 20px;
 }
-td {
+.table-body {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.table-row {
+  border-bottom: 1px solid #ddd;
   max-height: 40px;
-  text-align: center;
-  font-size: 15px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;
+  text-align: right;
 }
-tr {
+
+.table-row {
   border-bottom: 1px solid #ddd;
   max-height: 40px;
 }
+.table-data {
+  max-height: 40px;
+  font-size: 15px;
+}
+
 .actions {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 10px;
 }
-.actions p svg {
+.actions span svg {
   cursor: pointer;
   font-size: 25px;
 }
-.actions p svg:hover {
+.actions span svg:hover {
   color: #000;
 }
-.actions .delete-btn svg {
+.actions .delete-btn svg,
+.delete-btn {
   color: #ff0000;
+  cursor: pointer;
+  font-size: 25px;
 }
 .actions .edit-btn svg {
   color: #004eb4;

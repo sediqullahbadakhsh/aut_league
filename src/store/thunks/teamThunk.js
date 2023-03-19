@@ -8,7 +8,6 @@ const fetchTeam = createAsyncThunk("team/fetch", async () => {
       Authorization: `Bearer ${getToken()}`,
     },
   });
-  console.log("from thunk", response.data);
   return response.data;
 });
 

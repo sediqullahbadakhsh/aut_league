@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTeam, updateTeam } from "../store/thunks/teamThunk";
+import { GrClose } from "react-icons/gr";
 
 export default function TeamsModal({ setShow, setShowEdit, editData }) {
   const [name, setName] = useState(editData?.name || "");
@@ -33,7 +34,7 @@ export default function TeamsModal({ setShow, setShowEdit, editData }) {
               setShow && setShow(false);
             }}
           >
-            close
+            <GrClose />
           </p>
           <h2>ایجاد تیم</h2>
 
