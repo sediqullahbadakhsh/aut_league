@@ -47,7 +47,7 @@ function Teams() {
     content = (
       <div className="table-row">
         <div>
-          <p className="table-data">در حال بارگذاری</p>;
+          <p className="table-data">در حال بارگذاری</p>
         </div>
       </div>
     );
@@ -55,7 +55,7 @@ function Teams() {
     content = (
       <div className="table-row">
         <div>
-          <p className="table-data">خطا در بارگذاری</p>;
+          <p className="table-data">خطا در بارگذاری</p>
         </div>
       </div>
     );
@@ -116,10 +116,7 @@ function Teams() {
       {show && <TeamsModal setShow={setShow} />}
       {viewTeam && <ViewTeam viewData={viewData} setViewTeam={setViewTeam} />}
       {showEdit && <TeamsModal setShowEdit={setShowEdit} editData={editData} />}
-      <div>
-        <div className="heading"></div>
-        <div className="data"></div>
-      </div>
+
       <div className="table">
         <div className="table-heading-container">
           <p className="table-heading">شناسه</p>

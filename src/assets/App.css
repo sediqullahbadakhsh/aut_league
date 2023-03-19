@@ -279,10 +279,10 @@ select {
 .table-heading-container {
   background-color: #70aeff;
   color: #fff;
-  padding: 10px 0;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;
   text-align: right;
+  margin-bottom: 5px;
 }
 .table-heading,
 .table-data {
