@@ -3,23 +3,64 @@ import { useDispatch } from "react-redux";
 import { addTeam, updateTeam } from "../store/thunks/teamThunk";
 import { GrClose } from "react-icons/gr";
 
-export default function TeamsModal({ setShow, setShowEdit, editData }) {
+export default function TeamsModal({
+  setShow,
+  setShowEdit,
+  editData,
+  setMessage,
+  setShowSuccess,
+}) {
   const [name, setName] = useState(editData?.name || "");
+  const [nameError, setNameError] = useState("");
   const [category, setCategory] = useState(editData?.category || "");
+  const [categoryError, setCategoryError] = useState("");
   const [phone, setPhone] = useState(editData?.phone || "");
+  const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState(editData?.address || "");
+  const [addressError, setAddressError] = useState("");
   const id = editData?.id;
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (setShowEdit) {
-      dispatch(updateTeam({ id, name, category, phone, address }));
-      setShowEdit(false);
+    let nameError = "";
+    let categoryError = "";
+    let phoneError = "";
+    let addressError = "";
+
+    if (!name) {
+      nameError = "اسم تیم را وارد کنید";
+    } else if (name.length < 4) {
+      nameError = "اسم تیم باید بیشتر از 4 کاراکتر باشد";
+    }
+    if (!category) {
+      categoryError = "دسته بندی را انتخاب کنید";
+    }
+    if (!phone) {
+      phoneError = "شماره تماس را وارد کنید";
+    } else if (phone.length < 10) {
+      phoneError = "شماره تماس باید 10 رقم باشد";
+    }
+    if (!address) {
+      addressError = "آدرس را وارد کنید";
+    }
+    if (nameError || categoryError || phoneError || addressError) {
+      setNameError(nameError);
+      setCategoryError(categoryError);
+      setPhoneError(phoneError);
+      setAddressError(addressError);
     } else {
-      dispatch(addTeam({ name, category, phone, address }));
-      setShow(false);
+      if (setShowEdit) {
+        setMessage("تیم با موفقیت ویرایش شد");
+        setShowSuccess(true);
+        dispatch(updateTeam({ id, name, category, phone, address }));
+        setShowEdit(false);
+      } else {
+        setMessage("تیم با موفقیت ایجاد شد");
+        dispatch(addTeam({ name, category, phone, address }));
+        setShow(false);
+      }
     }
   };
 
@@ -49,6 +90,7 @@ export default function TeamsModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="اسم تیم را وارد کنید"
             />
+            <label className="error">{nameError}</label>
           </div>
           <div className="input-field">
             <label dir="rtl" htmlFor="category">
@@ -63,6 +105,7 @@ export default function TeamsModal({ setShow, setShowEdit, editData }) {
               <option value={1}>شبه سازی</option>
               <option value={2}>فزیکی</option>
             </select>
+            <label className="error">{categoryError}</label>
           </div>
           <div className="input-field">
             <label dir="rtl" htmlFor="phone">
@@ -75,6 +118,7 @@ export default function TeamsModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="شماره تماس سرگروه تیم را وارد کنید"
             />
+            <label className="error">{phoneError}</label>
           </div>
           <div className="input-field">
             <label dir="rtl" htmlFor="address">
@@ -87,6 +131,7 @@ export default function TeamsModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setAddress(e.target.value)}
               placeholder="آدرس تیم را وارد کنید"
             />
+            <label className="error">{addressError}</label>
           </div>
           <button type="submit">ثبت</button>
         </div>

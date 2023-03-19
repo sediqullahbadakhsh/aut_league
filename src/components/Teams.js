@@ -21,13 +21,24 @@ function Teams() {
   const [viewTeam, setViewTeam] = useState(false);
   const [editData, setEditData] = useState();
   const [viewData, setViewData] = useState();
+  const [message, setMessage] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
+  const hideModal = () => {
+    setShowSuccess(false);
+  };
+  useEffect(() => {
+    if (message) {
+      const timeoutId = setTimeout(hideModal, 3000); // hide the modal after 3 seconds
+      return () => clearTimeout(timeoutId);
+    }
+  }, [message]);
 
   const teams = useSelector((state) => state.teams.data.teams);
   useEffect(() => {
     doFetchTeam();
-  }, [doFetchTeam]);
+  }, [doFetchTeam, message]);
 
   const handleRemove = (id) => {
     dispatch(removeTeam({ id }));
@@ -113,9 +124,30 @@ function Teams() {
       <button className="add-btn" onClick={() => setShow(true)}>
         جدید
       </button>
-      {show && <TeamsModal setShow={setShow} />}
-      {viewTeam && <ViewTeam viewData={viewData} setViewTeam={setViewTeam} />}
-      {showEdit && <TeamsModal setShowEdit={setShowEdit} editData={editData} />}
+      {show && (
+        <TeamsModal
+          setMessage={setMessage}
+          setShowSuccess={setShowSuccess}
+          setShow={setShow}
+        />
+      )}
+      {viewTeam && (
+        <ViewTeam
+          setMessage={setMessage}
+          setShowSuccess={setShowSuccess}
+          viewData={viewData}
+          setViewTeam={setViewTeam}
+        />
+      )}
+      {showEdit && (
+        <TeamsModal
+          setMessage={setMessage}
+          setShowSuccess={setShowSuccess}
+          setShowEdit={setShowEdit}
+          editData={editData}
+        />
+      )}
+      {showSuccess && <div className="success">{message}</div>}
 
       <div className="table">
         <div className="table-heading-container">

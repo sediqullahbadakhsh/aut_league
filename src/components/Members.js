@@ -21,7 +21,7 @@ function Members() {
   const itemsPerPage = 10;
   useEffect(() => {
     doFetchMemberr();
-  }, [doFetchMemberr]);
+  }, [doFetchMemberr, dispatch]);
 
   const hundelRemove = (id) => {
     dispatch(removeMember({ id }));
@@ -81,7 +81,7 @@ function Members() {
     <div className="list-main" dir="rtl">
       <h1 className="header_text">اعضا</h1>
       <button className="add-btn" onClick={() => setShow(true)}>
-        افزودن عضو
+        جدید
       </button>
       {show && <MembersModal setShow={setShow} />}
       {showEdit && (

@@ -395,3 +395,24 @@ select {
   font-weight: bold;
   color: #fff;
 }
+.success,
+.warning {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 200px;
+  text-align: center;
+  height: 40px;
+}
+.success {
+  color: black;
+  background-color: greenyellow;
+}
+.warning {
+  color: black;
+  background-color: rgb(250, 72, 17);
+}
