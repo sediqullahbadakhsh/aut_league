@@ -3,24 +3,71 @@ import { useDispatch } from "react-redux";
 import { addMember, updateMember } from "../store/thunks/memberThunk";
 import { GrClose } from "react-icons/gr";
 
-function MembersModal({ setShow, setShowEdit, editData }) {
+function MembersModal({
+  setShow,
+  setShowEdit,
+  editData,
+  setMessage,
+  setShowSuccess,
+}) {
   const [name, setName] = useState(editData?.["first-name"] || "");
+  const [nameError, setNameError] = useState("");
   const [lname, setLname] = useState(editData?.["last-name"] || "");
+  const [lnameError, setLnameError] = useState("");
   const [age, setAge] = useState(editData?.age || "");
+  const [ageError, setAgeError] = useState("");
   const [phone, setPhone] = useState(editData?.phone || "");
+  const [phoneError, setPhoneError] = useState("");
   const [email, setEmail] = useState(editData?.email || "");
+  const [emailError, setEmailError] = useState("");
   const id = editData?.id;
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (setShowEdit) {
-      dispatch(updateMember({ id, name, lname, age, phone, email }));
-      setShowEdit(false);
+    let nameError = "";
+    let lnameError = "";
+    let ageError = "";
+    let phoneError = "";
+    let emailError = "";
+    if (!name) {
+      nameError = "اسم را وارد کنید";
+    } else if (name.length < 4) {
+      nameError = "اسم باید بیشتر از 4 کاراکتر باشد";
+    }
+    if (!lname) {
+      lnameError = "اسم فامیل را وارد کنید";
+    } else if (lname.length < 4) {
+      lnameError = "اسم فامیل باید بیشتر از 4 کاراکتر باشد";
+    }
+    if (!age) {
+      ageError = "سن را وارد کنید";
+    }
+    if (!phone) {
+      phoneError = "شماره تماس را وارد کنید";
+    }
+    if (!email) {
+      emailError = "ایمیل را وارد کنید";
+    }
+    if (nameError || lnameError || ageError || phoneError || emailError) {
+      setNameError(nameError);
+      setLnameError(lnameError);
+      setAgeError(ageError);
+      setPhoneError(phoneError);
+      setEmailError(emailError);
     } else {
-      dispatch(addMember({ name, lname, age, phone, email }));
-      setShow(false);
+      if (setShowEdit) {
+        setMessage("اطلاعات با موفقیت ویرایش شد");
+        setShowSuccess(true);
+        dispatch(updateMember({ id, name, lname, age, phone, email }));
+        setShowEdit(false);
+      } else {
+        setMessage("اطلاعات با موفقیت ثبت شد");
+        setShowSuccess(true);
+        dispatch(addMember({ name, lname, age, phone, email }));
+        setShow(false);
+      }
     }
   };
 
@@ -50,6 +97,7 @@ function MembersModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="اسم تیم را وارد کنید"
             />
+            <label className="error">{nameError}</label>
           </div>
           <div className="input-field">
             <label dir="rtl" htmlFor="name">
@@ -62,6 +110,7 @@ function MembersModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setLname(e.target.value)}
               placeholder="اسم تیم را وارد کنید"
             />
+            <label className="error">{lnameError}</label>
           </div>
           <div className="input-field">
             <label dir="rtl" htmlFor="name">
@@ -74,6 +123,7 @@ function MembersModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setAge(e.target.value)}
               placeholder="اسم تیم را وارد کنید"
             />
+            <label className="error">{ageError}</label>
           </div>
           <div className="input-field">
             <label dir="rtl" htmlFor="name">
@@ -86,6 +136,7 @@ function MembersModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="اسم تیم را وارد کنید"
             />
+            <label className="error">{phoneError}</label>
           </div>
 
           <div className="input-field">
@@ -99,6 +150,7 @@ function MembersModal({ setShow, setShowEdit, editData }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="شماره تماس سرگروه تیم را وارد کنید"
             />
+            <label className="error">{emailError}</label>
           </div>
 
           <button type="submit">ثبت</button>

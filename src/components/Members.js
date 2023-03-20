@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMember, removeMember } from "../store/thunks/memberThunk";
 import { useThunk } from "../hooks/use-thunk";
-
 import MembersModal from "./MembersModal";
 import ReactPaginate from "react-paginate";
 import { BiEdit } from "react-icons/bi";
@@ -10,18 +9,31 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Dfooter from "./Dfooter";
 
 function Members() {
+  const dispatch = useDispatch();
   const [doFetchMemberr, isLoadingMember, loadingMemberError] =
     useThunk(fetchMember);
-  const members = useSelector((state) => state.members.data.members);
   const [showEdit, setShowEdit] = useState(false);
   const [show, setShow] = useState(false);
   const [editData, setEditData] = useState();
-  const dispatch = useDispatch();
+  const [message, setMessage] = useState();
+  const [showSuccess, setShowSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
+  const hideModal = () => {
+    setShowSuccess(false);
+  };
+
+  useEffect(() => {
+    if (message) {
+      const timeoutId = setTimeout(hideModal, 3000); // hide the modal after 3 seconds
+      return () => clearTimeout(timeoutId);
+    }
+  }, [message]);
+  const { data: members } = useSelector((state) => state.members);
+
   useEffect(() => {
     doFetchMemberr();
-  }, [doFetchMemberr, dispatch]);
+  }, [doFetchMemberr, members]);
 
   const hundelRemove = (id) => {
     dispatch(removeMember({ id }));
@@ -83,10 +95,22 @@ function Members() {
       <button className="add-btn" onClick={() => setShow(true)}>
         جدید
       </button>
-      {show && <MembersModal setShow={setShow} />}
-      {showEdit && (
-        <MembersModal setShowEdit={setShowEdit} editData={editData} />
+      {show && (
+        <MembersModal
+          setMessage={setMessage}
+          setShowSuccess={setShowSuccess}
+          setShow={setShow}
+        />
       )}
+      {showEdit && (
+        <MembersModal
+          setMessage={setMessage}
+          setShowSuccess={setShowSuccess}
+          setShowEdit={setShowEdit}
+          editData={editData}
+        />
+      )}
+      {showSuccess && <div className="success">{message}</div>}
       <div className="table">
         <div className="table-heading-container">
           <p className="table-heading">نام</p>
@@ -96,38 +120,7 @@ function Members() {
           <p className="table-heading">ایمیل</p>
           <p className="table-heading">اکشن</p>
         </div>
-        {/* <tbody> */}
         {content}
-        {/* {membersToDisplay?.map((member) => (
-            <tr key={member.id}>
-              <td>{member["first-name"]}</td>
-              <td>{member["last-name"]}</td>
-              <td>{member.age}</td>
-              <td>{member.phone}</td>
-              <td>{member.email}</td>
-              <td className="actions">
-                <p
-                  className="edit-btn"
-                  onClick={() => {
-                    setShowEdit(true);
-                    setEditData(member);
-                  }}
-                >
-                  <BiEdit />
-                </p>
-                {showEdit && (
-                  <MembersModal setShowEdit={setShowEdit} editData={editData} />
-                )}
-                <p
-                  className="delete-btn"
-                  onClick={() => hundelRemove(member.id)}
-                >
-                  <RiDeleteBin6Line />
-                </p>
-              </td>
-            </tr>
-          ))}
-        </tbody> */}
       </div>
       <ReactPaginate
         previousLabel={"قبلی"}

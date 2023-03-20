@@ -12,10 +12,8 @@ import Dfooter from "./Dfooter";
 
 function Teams() {
   const dispatch = useDispatch();
-
   const [doFetchTeam, isLoadingTeam, loadingTeamError] = useThunk(fetchTeam);
-  const [doRemoveTeam, isLoadingRemoveTeam, loadingRemoveTeamError] =
-    useThunk(removeTeam);
+  useThunk(removeTeam);
   const [showEdit, setShowEdit] = useState(false);
   const [show, setShow] = useState(false);
   const [viewTeam, setViewTeam] = useState(false);
@@ -28,6 +26,7 @@ function Teams() {
   const hideModal = () => {
     setShowSuccess(false);
   };
+
   useEffect(() => {
     if (message) {
       const timeoutId = setTimeout(hideModal, 3000); // hide the modal after 3 seconds

@@ -6,61 +6,53 @@ import {
   removeMember,
 } from "../thunks/memberThunk";
 
+const initialState = {
+  data: [],
+  isLoading: false,
+  error: null,
+};
+
+const isPendingAction = (action) => action.type.endsWith("/pending");
+const isFulfilledAction = (action) => action.type.endsWith("/fulfilled");
+const isRejectedAction = (action) => action.type.endsWith("/rejected");
+
 const teamSlice = createSlice({
   name: "members",
-  initialState: {
-    data: [],
-    isLoading: false,
-    error: null,
-  },
+  initialState,
+  reducers: {},
   extraReducers(builder) {
-    builder.addCase(fetchMember.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(fetchMember.fulfilled, (state, action) => {
-      state.data = action.payload;
-      state.isLoading = false;
-    });
-    builder.addCase(fetchMember.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
-    builder.addCase(addMember.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(addMember.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data.push(action.payload);
-    });
-    builder.addCase(addMember.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
-    builder.addCase(updateMember.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(updateMember.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data = state.data.map((member) =>
-        member.id === action.payload.id ? action.payload : member
-      );
-    });
-
-    builder.addCase(updateMember.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
-    builder.addCase(removeMember.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(removeMember.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data = state.data.filter((user) => user.id !== action.payload.id);
-    });
-    builder.addCase(removeMember.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
+    builder
+      .addMatcher(isPendingAction, (state) => {
+        state.isLoading = true;
+      })
+      .addMatcher(isFulfilledAction, (state, action) => {
+        state.isLoading = false;
+        switch (action.type) {
+          case fetchMember.fulfilled.type:
+            state.data = action.payload;
+            break;
+          case addMember.fulfilled.type:
+            state.data.push(action.payload);
+            break;
+          case updateMember.fulfilled.type:
+            const updatedUserIndex = state.data.findIndex(
+              (user) => user.id === action.payload.id
+            );
+            state.data[updatedUserIndex] = action.payload;
+            break;
+          case removeMember.fulfilled.type:
+            state.data = state.data.filter(
+              (user) => user.id !== action.payload.id
+            );
+            break;
+          default:
+            break;
+        }
+      })
+      .addMatcher(isRejectedAction, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      });
   },
 });
 

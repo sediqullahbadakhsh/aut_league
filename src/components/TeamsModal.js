@@ -58,6 +58,7 @@ export default function TeamsModal({
         setShowEdit(false);
       } else {
         setMessage("تیم با موفقیت ایجاد شد");
+        setShowSuccess(true);
         dispatch(addTeam({ name, category, phone, address }));
         setShow(false);
       }

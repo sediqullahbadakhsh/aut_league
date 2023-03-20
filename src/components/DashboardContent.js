@@ -6,8 +6,8 @@ import { event_date } from "../store/baseURL";
 import { useSelector } from "react-redux";
 
 export default function DashboardContent() {
-  const teams = useSelector((state) => state.teams.data.teams);
-  const members = useSelector((state) => state.members.data.members);
+  const { data: teams } = useSelector((state) => state.teams);
+  const { data: members } = useSelector((state) => state.members);
   const [doFetchTeam, isLoadingTeam, loadingTeamError] = useThunk(fetchTeam);
   const [doFetchMember, isLoadingMember, loadingMemberError] =
     useThunk(fetchMember);

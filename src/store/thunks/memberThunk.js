@@ -8,7 +8,7 @@ const fetchMember = createAsyncThunk("member/fetch", async () => {
       Authorization: `Bearer ${getToken()}`,
     },
   });
-  return response.data;
+  return response.data.members;
 });
 
 const addMember = createAsyncThunk(
