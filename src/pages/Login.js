@@ -61,10 +61,8 @@ export default function Login({ setDisappear }) {
   return (
     <div className="container">
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>{modalMessage}</h2>
-          </div>
+        <div className="warning">
+          <h2>{modalMessage}</h2>
         </div>
       )}{" "}
       <div className="form-container">

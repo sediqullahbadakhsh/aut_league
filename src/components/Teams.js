@@ -35,10 +35,10 @@ function Teams() {
     }
   }, [message]);
 
-  const teams = useSelector((state) => state.teams.data.teams);
+  const { data: teams } = useSelector((state) => state.teams);
   useEffect(() => {
     doFetchTeam();
-  }, [doFetchTeam, message]);
+  }, [doFetchTeam, teams]);
 
   const handleRemove = (id) => {
     dispatch(removeTeam({ id }));

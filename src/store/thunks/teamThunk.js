@@ -2,16 +2,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL, getToken } from "../baseURL";
 import axios from "axios";
 
-const fetchTeam = createAsyncThunk("team/fetch", async () => {
+const fetchTeam = createAsyncThunk("teams/fetchTeam", async () => {
   const response = await axios.get(`${BASE_URL}team/all`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
-  return response.data;
+  return response.data.teams;
 });
 
-const addTeam = createAsyncThunk("team/add", async (team) => {
+const addTeam = createAsyncThunk("teams/addTeam", async (team) => {
   const response = await axios.post(
     `${BASE_URL}team/create`,
     {
@@ -26,7 +26,7 @@ const addTeam = createAsyncThunk("team/add", async (team) => {
   return response.data;
 });
 
-const updateTeam = createAsyncThunk("team/update", async (team) => {
+const updateTeam = createAsyncThunk("teams/updateTeam", async (team) => {
   const response = await axios.put(
     `${BASE_URL}team/edit`,
     {
@@ -42,7 +42,7 @@ const updateTeam = createAsyncThunk("team/update", async (team) => {
   return response.data;
 });
 
-const removeTeam = createAsyncThunk("team/remove", async (team) => {
+const removeTeam = createAsyncThunk("teams/removeTeam", async (team) => {
   const response = await axios.post(
     `${BASE_URL}team/remove`,
     {
