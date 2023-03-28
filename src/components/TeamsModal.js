@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTeam, updateTeam } from "../store/thunks/teamThunk";
+import {
+  useAddTeamMutation,
+  useFetchTeamsQuery,
+  useUpdateTeamMutation,
+} from "../store/slices/teamApi";
 import { GrClose } from "react-icons/gr";
 
 export default function TeamsModal({
@@ -20,9 +23,10 @@ export default function TeamsModal({
   const [addressError, setAddressError] = useState("");
   const id = editData?.id;
 
-  const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
+  const [addTeam] = useAddTeamMutation();
+  const [updateTeam] = useUpdateTeamMutation();
+  const { refetch } = useFetchTeamsQuery();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let nameError = "";
     let categoryError = "";
@@ -52,14 +56,24 @@ export default function TeamsModal({
       setAddressError(addressError);
     } else {
       if (setShowEdit) {
-        setMessage("تیم با موفقیت ویرایش شد");
-        setShowSuccess(true);
-        dispatch(updateTeam({ id, name, category, phone, address }));
+        try {
+          await updateTeam({ id, name, category, phone, address }).unwrap();
+          refetch();
+          setMessage("تیم با موفقیت ویرایش شد");
+          setShowSuccess(true);
+        } catch (err) {
+          console.error("Error updating team:", err);
+        }
         setShowEdit(false);
       } else {
-        setMessage("تیم با موفقیت ایجاد شد");
-        setShowSuccess(true);
-        dispatch(addTeam({ name, category, phone, address }));
+        try {
+          await addTeam({ name, category, phone, address }).unwrap();
+          refetch();
+          setMessage("تیم با موفقیت ایجاد شد");
+          setShowSuccess(true);
+        } catch (err) {
+          console.error("Error adding team:", err);
+        }
         setShow(false);
       }
     }

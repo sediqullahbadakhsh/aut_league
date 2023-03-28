@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addMember, updateMember } from "../store/thunks/memberThunk";
+import {
+  useAddMemberMutation,
+  useUpdateMemberMutation,
+  useFetchMembersQuery,
+} from "../store/slices/memberApi";
 import { GrClose } from "react-icons/gr";
 
 function MembersModal({
@@ -22,9 +26,10 @@ function MembersModal({
   const [emailError, setEmailError] = useState("");
   const id = editData?.id;
 
-  const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
+  const [addMember] = useAddMemberMutation();
+  const [updateMember] = useUpdateMemberMutation();
+  const { refetch } = useFetchMembersQuery();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let nameError = "";
     let lnameError = "";
@@ -58,14 +63,26 @@ function MembersModal({
       setEmailError(emailError);
     } else {
       if (setShowEdit) {
-        setMessage("اطلاعات با موفقیت ویرایش شد");
-        setShowSuccess(true);
-        dispatch(updateMember({ id, name, lname, age, phone, email }));
+        try {
+          await updateMember({ id, name, lname, age, phone, email });
+          refetch();
+          setMessage("اطلاعات با موفقیت ویرایش شد");
+          setShowSuccess(true);
+        } catch (error) {
+          setMessage("خطایی رخ داده است");
+          setShowSuccess(true);
+        }
         setShowEdit(false);
       } else {
-        setMessage("اطلاعات با موفقیت ثبت شد");
-        setShowSuccess(true);
-        dispatch(addMember({ name, lname, age, phone, email }));
+        try {
+          await addMember({ name, lname, age, phone, email });
+          refetch();
+          setMessage("اطلاعات با موفقیت ثبت شد");
+          setShowSuccess(true);
+        } catch (error) {
+          setMessage("خطایی رخ داده است");
+          setShowSuccess(true);
+        }
         setShow(false);
       }
     }

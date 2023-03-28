@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTeam, removeTeam } from "../store/thunks/teamThunk";
-import { useThunk } from "../hooks/use-thunk";
+import {
+  useFetchTeamsQuery,
+  useRemoveTeamMutation,
+} from "../store/slices/teamApi";
 import TeamsModal from "./TeamsModal";
 import ViewTeam from "./ViewTeam";
 import ReactPaginate from "react-paginate";
@@ -11,9 +12,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Dfooter from "./Dfooter";
 
 function Teams() {
-  const dispatch = useDispatch();
-  const [doFetchTeam, isLoadingTeam, loadingTeamError] = useThunk(fetchTeam);
-  useThunk(removeTeam);
   const [showEdit, setShowEdit] = useState(false);
   const [show, setShow] = useState(false);
   const [viewTeam, setViewTeam] = useState(false);
@@ -29,18 +27,26 @@ function Teams() {
 
   useEffect(() => {
     if (message) {
-      const timeoutId = setTimeout(hideModal, 3000); // hide the modal after 3 seconds
+      const timeoutId = setTimeout(hideModal, 3000);
       return () => clearTimeout(timeoutId);
     }
   }, [message]);
 
-  const { data: teams } = useSelector((state) => state.teams);
-  useEffect(() => {
-    doFetchTeam();
-  }, [doFetchTeam, teams]);
+  const {
+    data: teams,
+    isLoading: isLoadingTeam,
+    error: loadingTeamError,
+  } = useFetchTeamsQuery();
+  const { refetch } = useFetchTeamsQuery();
+  const [removeTeam] = useRemoveTeamMutation();
 
-  const handleRemove = (id) => {
-    dispatch(removeTeam({ id }));
+  const handleRemove = async (id) => {
+    try {
+      await removeTeam({ id }).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Error removing team:", err);
+    }
   };
 
   const handlePageClick = (data) => {
@@ -71,7 +77,7 @@ function Teams() {
     );
   } else {
     content = (
-      <div className="table-body">
+      <div className="table-body" key={teams.length}>
         {teamsToDisplay?.map((team) => (
           <div className="table-row" key={team.id}>
             <p className="table-data">{team.id}</p>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchMember, removeMember } from "../store/thunks/memberThunk";
-import { useThunk } from "../hooks/use-thunk";
+import {
+  useFetchMembersQuery,
+  useRemoveMemberMutation,
+} from "../store/slices/memberApi";
 import MembersModal from "./MembersModal";
 import ReactPaginate from "react-paginate";
 import { BiEdit } from "react-icons/bi";
@@ -9,9 +10,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Dfooter from "./Dfooter";
 
 function Members() {
-  const dispatch = useDispatch();
-  const [doFetchMemberr, isLoadingMember, loadingMemberError] =
-    useThunk(fetchMember);
   const [showEdit, setShowEdit] = useState(false);
   const [show, setShow] = useState(false);
   const [editData, setEditData] = useState();
@@ -29,14 +27,22 @@ function Members() {
       return () => clearTimeout(timeoutId);
     }
   }, [message]);
-  const { data: members } = useSelector((state) => state.members);
 
-  useEffect(() => {
-    doFetchMemberr();
-  }, [doFetchMemberr, members]);
+  const {
+    data: members,
+    isLoading: isLoadingMember,
+    error: loadingMemberError,
+    refetch,
+  } = useFetchMembersQuery();
+  const [removeMember] = useRemoveMemberMutation();
 
-  const hundelRemove = (id) => {
-    dispatch(removeMember({ id }));
+  const hundelRemove = async (id) => {
+    try {
+      await removeMember({ id }).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Error removing team:", err);
+    }
   };
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);

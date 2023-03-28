@@ -1,20 +1,10 @@
-import { useEffect } from "react";
-import { fetchTeam } from "../store/thunks/teamThunk";
-import { fetchMember } from "../store/thunks/memberThunk";
-import { useThunk } from "../hooks/use-thunk";
 import { event_date } from "../store/baseURL";
-import { useSelector } from "react-redux";
+import { useFetchTeamsQuery } from "../store/slices/teamApi";
+import { useFetchMembersQuery } from "../store/slices/memberApi";
 
 export default function DashboardContent() {
-  const { data: teams } = useSelector((state) => state.teams);
-  const { data: members } = useSelector((state) => state.members);
-  const [doFetchTeam, isLoadingTeam, loadingTeamError] = useThunk(fetchTeam);
-  const [doFetchMember, isLoadingMember, loadingMemberError] =
-    useThunk(fetchMember);
-  useEffect(() => {
-    doFetchTeam();
-    doFetchMember();
-  }, [doFetchTeam, doFetchMember]);
+  const { data: teams } = useFetchTeamsQuery();
+  const { data: members } = useFetchMembersQuery();
 
   return (
     <div className="dash-container" dir="rtl">

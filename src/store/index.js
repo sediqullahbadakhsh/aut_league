@@ -1,14 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "./slices/userSlice";
-import { teamReducer } from "./slices/teamSlice";
-import { memberReducer } from "./slices/memberSlice";
-import { teamMemberReducer } from "./slices/teamMemberSlice";
+import { teamApi } from "./slices/teamApi";
+import { teamMemberApi } from "./slices/teamMeberApi";
+import { memberApi } from "./slices/memberApi";
 
 export const store = configureStore({
   reducer: {
     users: userReducer,
-    teams: teamReducer,
-    members: memberReducer,
-    teamMembers: teamMemberReducer,
+    [teamApi.reducerPath]: teamApi.reducer,
+    [teamMemberApi.reducerPath]: teamMemberApi.reducer,
+    [memberApi.reducerPath]: memberApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    teamApi.middleware,
+    teamMemberApi.middleware,
+    memberApi.middleware,
+  ],
 });

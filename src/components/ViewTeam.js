@@ -1,37 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
 import {
-  addTeamMember,
-  removeTeamMember,
-} from "../store/thunks/teamMemberThunk";
-import { fetchMember } from "../store/thunks/memberThunk";
+  useAddTeamMemberMutation,
+  useRemoveTeamMemberMutation,
+} from "../store/slices/teamMeberApi";
+import { useFetchTeamsQuery } from "../store/slices/teamApi";
+import { useFetchMembersQuery } from "../store/slices/memberApi";
 
 export default function ViewTeam({ setViewTeam, viewData }) {
-  const members = useSelector((state) => state.members.data.members);
-  const [memberId, setMemberId] = useState();
-  const [rmemberId, setRmemberId] = useState();
+  const [memberrId, setMemberId] = useState("");
   const teamId = viewData.id;
+  const [addTeamMember] = useAddTeamMemberMutation();
+  const [removeTeamMember] = useRemoveTeamMemberMutation();
+  const { data: teams, refetch } = useFetchTeamsQuery();
+  const { data: members } = useFetchMembersQuery();
 
-  const dispatch = useDispatch();
-  const handleSubmit = (e) => {
+  const teamMember = teams.filter((team) => team.id === viewData.id);
+  console.log(teamMember);
+  console.log(teamMember[0]?.members);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(addTeamMember({ teamId, memberId }));
+    try {
+      const memberId = parseInt(memberrId);
+      await addTeamMember({ teamId, memberId }).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Error adding team member:", err);
+    }
   };
-  useEffect(() => {
-    dispatch(fetchMember());
-  }, [dispatch, memberId]);
 
-  const hundelRemove = (e) => {
-    // e.preventDefault();
-    dispatch(removeTeamMember({ teamId, rmemberId }));
-  };
-  const getMemberId = (id) => {
-    console.log(id);
-    setRmemberId(id);
-    hundelRemove();
+  const handleRemove = async (id) => {
+    try {
+      const memberId = parseInt(id, 10);
+      await removeTeamMember({ teamId, memberId: memberId }).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Error removing team member:", err);
+    }
   };
 
   return (
@@ -81,7 +87,7 @@ export default function ViewTeam({ setViewTeam, viewData }) {
             <div className="input-field">
               <select
                 id="teamMember"
-                value={memberId}
+                value={memberrId}
                 onChange={(e) => setMemberId(e.target.value)}
               >
                 <option value="" disabled>
@@ -109,7 +115,7 @@ export default function ViewTeam({ setViewTeam, viewData }) {
             <p>اکشن</p>
           </div>
           <div className="members-content">
-            {viewData.members.map((member) => {
+            {teamMember[0]?.members.map((member) => {
               return (
                 <div className="members-row" key={member.id}>
                   <p>{member["first-name"]}</p>
@@ -117,7 +123,7 @@ export default function ViewTeam({ setViewTeam, viewData }) {
                   <p>{member.phone}</p>
                   <span
                     className="delete-btn"
-                    onClick={() => getMemberId(member.id)}
+                    onClick={() => handleRemove(member.id)}
                   >
                     <RiDeleteBin6Line />
                   </span>

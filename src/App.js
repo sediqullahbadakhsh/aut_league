@@ -1,5 +1,6 @@
-import Navbar from "./components/Navbar";
 import { Routes, Route, useLocation } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
 import MainPage from "./pages/MainPage";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
@@ -11,6 +12,7 @@ import Signup from "./pages/Signup";
 import NoPage from "./pages/NoPage";
 import { useEffect, useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useDispatch } from "react-redux";
 
 function App() {
   const location = useLocation();
@@ -19,15 +21,14 @@ function App() {
 
   const isSignedIn = Disappear;
   useEffect(() => {
-    if (
-      location.pathname === "/signin" ||
-      location.pathname === "/signup" ||
-      location.pathname === "/dashboard" ||
-      location.pathname === "/dashboard/league/teams" ||
-      location.pathname === "/dashboard/league/members"
-    ) {
-      setHidNav(true);
-    }
+    const hiddenRoutes = [
+      "/signin",
+      "/signup",
+      "/dashboard",
+      "/dashboard/league/teams",
+      "/dashboard/league/members",
+    ];
+    setHidNav(hiddenRoutes.includes(location.pathname));
   }, [location.pathname, Disappear]);
 
   return (
