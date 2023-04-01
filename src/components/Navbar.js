@@ -34,8 +34,10 @@ function Navbar() {
           </li>
         </ul>
       </nav>
-
-      <Link to="/signin">ثبت نام/ورود</Link>
+      <div>
+        {" "}
+        <Link to="/signin">ثبت نام/ورود</Link>
+      </div>
     </div>
   );
 }
